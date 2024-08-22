@@ -1,21 +1,22 @@
 class Solution {
 public:
-    
-    int dp[100];
-    int solve(vector<int>&nums,int n)
-    {
-        if(n<0) return 0;
-        if(n==0) return nums[0];
-        if(dp[n]!=-1) return dp[n];
-        int include = solve(nums,n-2)+nums[n];
-        int exclude = solve(nums,n-1)+0;
-        int res = max(include,exclude);
-        return dp[n]=res;
-    }
-    int rob(vector<int>& nums){
+    int rob(vector<int>& nums) {
         int n = nums.size();
-        memset(dp,-1,sizeof(dp));
-        int ans = solve(nums,n-1);
-        return ans;
+        if (n == 0) return 0;
+        if (n == 1) return nums[0];
+        if (n == 2) return max(nums[0], nums[1]);
+
+        vector<int> dp(n, 0); // DP table
+
+        // Base cases
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+
+        // Fill the DP table
+        for (int i = 2; i < n; ++i) {
+            dp[i] = max(dp[i-1], dp[i-2] + nums[i]);
+        }
+
+        return dp[n-1]; // Result is in the last cell
     }
 };
