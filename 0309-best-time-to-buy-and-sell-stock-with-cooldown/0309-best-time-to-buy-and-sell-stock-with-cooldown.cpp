@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int dp[5000][2];
+    int dp[5000][1000];
     
     int solve(int ind, int buy, vector<int> &prices, int n) {
         if (ind >= n) return 0; // Base case: no more days to trade
