@@ -1,32 +1,26 @@
 class Solution {
 public:
-    int solve(vector<int>& days, vector<int>& costs, int ind, int n, vector<int>& dp) {
-        // Base case
-        if (ind >= n) return 0;
-
-        // Memoization check
-        if (dp[ind] != -1) return dp[ind];
-
-        // 1 Day Pass
-        int option1 = costs[0] + solve(days, costs, ind + 1, n, dp);
-
-        // 7 Day Pass
-        int i;
-        for (i = ind; i < n && days[i] < days[ind] + 7; i++);
-        int option2 = costs[1] + solve(days, costs, i, n, dp);
-
-        // 30 Day Pass
-        for (i = ind; i < n && days[i] < days[ind] + 30; i++);
-        int option3 = costs[2] + solve(days, costs, i, n, dp);
-
-        // Store the result in dp[ind] and return it
-        dp[ind] = min(option1, min(option2, option3));
-        return dp[ind];
+    //Tabulation
+    int solve(vector<int>& days, vector<int>& costs,int n) {
+      vector<int>dp(n+1,INT_MAX);
+        dp[n] = 0;
+        for(int j = n-1;j>=0;j--)
+        {  //1 day pass
+            int op1 = costs[0]+dp[j+1];
+            // 7 day pass
+            int i;
+            for(i=j;i<n && days[i]<days[j]+7;i++);
+              int op2 = costs[1]+dp[i];
+            // 30 day pass
+            for(i=j;i<n && days[i]<days[j]+30;i++);
+              int op3 = costs[2]+dp[i]; 
+             dp[j] = min({op1, op2, op3});
+        }
+        return dp[0];
     }
 
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         int n = days.size();
-        vector<int> dp(n + 1, -1); // Initialize dp vector with -1
-        return solve(days, costs, 0, n, dp);
+        return solve(days, costs,n);
     }
 };
