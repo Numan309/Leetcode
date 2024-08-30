@@ -13,14 +13,35 @@ public:
         return dp[ind][n] = max(take, notTake);
     }
 
-    int maxSizeSlices(vector<int>& slices) {
+    int solveTab(vector<int>& slices) {
         int k = slices.size();
-        vector<vector<int>> dp1(k, vector<int>(k / 3 + 1, -1));
-        vector<vector<int>> dp2(k, vector<int>(k / 3 + 1, -1));
-        
-        int case1 = solve(slices, 0, k / 3, k - 2, dp1);
-        int case2 = solve(slices, 1, k / 3, k - 1, dp2);
-        
+        vector<vector<int>> dp1(k + 2, vector<int>(k / 3 + 2, 0));
+        vector<vector<int>> dp2(k + 2, vector<int>(k / 3 + 2, 0));
+
+        // DP table for the first case (excluding the last slice)
+        for (int ind = k - 2; ind >= 0; --ind) {
+            for (int n = 1; n <= k / 3; ++n) {
+                int take = (ind + 2 <= k - 1) ? slices[ind] + dp1[ind + 2][n - 1] : slices[ind];
+                int notTake = dp1[ind + 1][n];
+                dp1[ind][n] = max(take, notTake);
+            }
+        }
+        int case1 = dp1[0][k / 3];
+
+        // DP table for the second case (excluding the first slice)
+        for (int ind = k - 1; ind >= 1; --ind) {
+            for (int n = 1; n <= k / 3; ++n) {
+                int take = (ind + 2 <= k - 1) ? slices[ind] + dp2[ind + 2][n - 1] : slices[ind];
+                int notTake = dp2[ind + 1][n];
+                dp2[ind][n] = max(take, notTake);
+            }
+        }
+        int case2 = dp2[1][k / 3];
+
         return max(case1, case2);
+    }
+
+    int maxSizeSlices(vector<int>& slices) {
+        return solveTab(slices);
     }
 };
