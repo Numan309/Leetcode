@@ -14,30 +14,28 @@ public:
     }
 
     int solveTab(vector<int>& slices) {
-        int k = slices.size();
+        int n = slices.size();
+        int k = n;
         vector<vector<int>> dp1(k + 2, vector<int>(k / 3 + 2, 0));
         vector<vector<int>> dp2(k + 2, vector<int>(k / 3 + 2, 0));
 
-        // DP table for the first case (excluding the last slice)
-        for (int ind = k - 2; ind >= 0; --ind) {
-            for (int n = 1; n <= k / 3; ++n) {
-                int take = (ind + 2 <= k - 1) ? slices[ind] + dp1[ind + 2][n - 1] : slices[ind];
-                int notTake = dp1[ind + 1][n];
-                dp1[ind][n] = max(take, notTake);
+        for (int ind = k - 2; ind >= 0; ind--) {
+            for (int count = 1; count <= k / 3; count++) {
+                int take = slices[ind] + dp1[ind + 2][count - 1];
+                int notTake = dp1[ind + 1][count];
+                dp1[ind][count] = max(take, notTake);
             }
         }
         int case1 = dp1[0][k / 3];
 
-        // DP table for the second case (excluding the first slice)
-        for (int ind = k - 1; ind >= 1; --ind) {
-            for (int n = 1; n <= k / 3; ++n) {
-                int take = (ind + 2 <= k - 1) ? slices[ind] + dp2[ind + 2][n - 1] : slices[ind];
-                int notTake = dp2[ind + 1][n];
-                dp2[ind][n] = max(take, notTake);
+        for (int ind = k - 1; ind >= 1; ind--) {
+            for (int count = 1; count <= k / 3; count++) {
+                int take = slices[ind] + dp2[ind + 2][count - 1];
+                int notTake = dp2[ind + 1][count];
+                dp2[ind][count] = max(take, notTake);
             }
         }
         int case2 = dp2[1][k / 3];
-
         return max(case1, case2);
     }
 
