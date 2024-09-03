@@ -24,9 +24,22 @@ public:
         }
         return dp[n];
     }
-    
+    int catalan(int n)
+    {
+          if (n <= 1)
+        return 1;
+ 
+    // catalan(n) is sum of
+    // catalan(i)*catalan(n-i-1)
+    unsigned long int res = 0;
+    for (int i = 0; i < n; i++)
+        res += catalan(i) * catalan(n - i - 1);
+ 
+    return res;
+    }
     int numTrees(int n) {
      //   vector<int> dp(n + 1, -1);
-        return solveTab(n);
+      //  return solveTab(n);
+        return catalan(n);
     }
 };
