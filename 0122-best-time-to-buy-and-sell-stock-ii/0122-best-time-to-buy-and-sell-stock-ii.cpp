@@ -41,11 +41,39 @@ public:
         }
         return dp[0][1];
     }
+     int solveOpt(vector<int>&prices)
+    {
+          int n = prices.size();
+           vector<int>curr(2,0);
+           vector<int>next(2,0);
+        for(int ind=n-1;ind>=0;ind--)
+        {
+            for(int buy = 0;buy<=1;buy++)
+            {
+                  int profit = 0;
+        if(buy)
+        {
+            int buyKaro = -prices[ind]+next[0];
+            int skipKaro = 0+next[1];
+            profit = max(buyKaro,skipKaro);
+        }else{
+            int sellKaro = +prices[ind]+next[1];
+            int skipKaro = 0+next[0];
+            profit = max(sellKaro,skipKaro);
+        }
+        curr[buy] = profit;
+            }
+            next = curr;
+        }
+        return next[1];
+    }
     int maxProfit(vector<int>& prices) {
         // int n = prices.size();
         // vector<vector<int>>dp(n,vector<int>(2,-1));
         // return solve(0,1,prices,dp);
         
-        return solveTab(prices);
+       // return solveTab(prices);
+        
+        return solveOpt(prices);
     }
 };
