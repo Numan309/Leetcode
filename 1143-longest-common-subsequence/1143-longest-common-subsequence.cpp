@@ -36,12 +36,37 @@ public:
         }
         return dp[0][0];
     }
+   int solveOpt(string text1, string text2) {
+        int n = text1.size();
+        int m = text2.size();
+        
+        vector<int> curr(m + 1, 0);
+        vector<int> next(m + 1, 0);
+        
+        // Start from the end of the strings
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = m - 1; j >= 0; --j) {
+                int ans = 0;
+                if (text1[i] == text2[j]) {
+                    ans = 1 + next[j + 1];
+                } else {
+                    ans = max(next[j], curr[j + 1]);
+                }
+                curr[j] = ans;
+            }
+            // Copy current to next
+            swap(curr, next);
+        }
+        
+        return next[0];
+    }
+    
     int longestCommonSubsequence(string text1, string text2) {
         // int n = text1.size();
         // int m = text2.size();
         // vector<vector<int>>dp(n,vector<int>(m,-1));
         // return solve(text1,text2,0,0,dp);
         
-        return solveTab(text1,text2);
+        return solveOpt(text1,text2);
     }
 };
