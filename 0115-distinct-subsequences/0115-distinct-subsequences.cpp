@@ -1,23 +1,29 @@
 class Solution {
 public:
-  
-    int solve(string &s,string &t,int i ,int j,vector<vector<int>>&dp)
-    {
-      if(j==t.size())return 1;
-        if(i==s.size()||j==t.size())return 0;
-         if(dp[i][j]!=-1)return dp[i][j];
-        int ans=0;
-        if(s[i]==t[j]){
-            ans = solve(s,t,i+1,j+1,dp)+solve(s,t,i+1,j,dp);
-        }else{
-            ans = solve(s,t,i+1,j,dp);
-        }
-        return dp[i][j] = ans;
-     }
     int numDistinct(string s, string t) {
-        int n = s.size();
-        int m = t.size();
-        vector<vector<int>>dp(n,vector<int>(m,-1));
-        return solve(s,t,0,0,dp);
+        const int MOD = 1e9 + 7;  // A large prime number for modulo
+        int m = s.size();
+        int n = t.size();
+        
+        // Use long long for the dp table to handle larger values
+        vector<vector<long long>> dp(m + 1, vector<long long>(n + 1, 0));
+        
+        // An empty t is a subsequence of any prefix of s
+        for (int i = 0; i <= m; ++i) {
+            dp[i][0] = 1;
+        }
+
+        // Fill the DP table
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (s[i - 1] == t[j - 1]) {
+                    dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j]) % MOD;
+                } else {
+                    dp[i][j] = dp[i - 1][j] % MOD;
+                }
+            }
+        }
+
+        return dp[m][n];
     }
 };
