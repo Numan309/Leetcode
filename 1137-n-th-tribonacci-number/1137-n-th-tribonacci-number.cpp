@@ -12,9 +12,21 @@ public:
         dp[n] = f(n - 1, dp) + f(n - 2, dp) + f(n - 3, dp);
         return dp[n];
     }
+    int f(int n)
+    {
+        vector<int>dp(n+3,0);
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 1;
+        for(int i=3;i<=n;i++)
+        {
+            dp[i] = dp[i-1] + dp[i-2] + dp[i-3];
+        }
+        return dp[n];
+    }
     
     int tribonacci(int n) {
-        vector<int> dp(n + 1, -1);
-        return f(n, dp);
+        // vector<int> dp(n + 1, -1);
+        return f(n);
     }
 };
