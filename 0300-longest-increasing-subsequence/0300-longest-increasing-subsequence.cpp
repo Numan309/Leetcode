@@ -1,23 +1,24 @@
 class Solution {
 public:
-  
+      int solve(vector<int>&nums,int curr,int prev,vector<vector<int>> &dp)
+    {
+        //Memoisation method
+        //Base case
+          int n = nums.size();
+        if(curr==n) return 0;
+        if(dp[curr][prev+1]!=-1) return dp[curr][prev+1];
+       //Include
+       int take = 0;
+       if(prev==-1 || nums[curr]>nums[prev])
+       take = 1+solve(nums,curr+1,curr,dp);
+       //exclude
+       int NotTake = 0+solve(nums,curr+1,prev,dp);
+       int ans = max(take,NotTake);
+       return dp[curr][prev+1] = ans;
+    }
     int lengthOfLIS(vector<int>& nums) {
-    int n = nums.size();
-        vector<int> dp(n, 1); // Initialize dp array with 1's for LIS length
-        
-        for (int i = 1; i < n; ++i) {
-            for (int j = 0; j < i; ++j) {
-                if (nums[i] > nums[j]) {
-                    dp[i] = max(dp[i], dp[j] + 1);
-                }
-            }
-        }
-        
-        // The length of the longest increasing subsequence will be the maximum value in dp
-        return *max_element(dp.begin(), dp.end());
-     
+        int n = nums.size();
+       vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        return solve(nums,0,-1,dp);
     }
 };
-
-
-
