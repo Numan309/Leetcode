@@ -16,9 +16,31 @@ public:
        int ans = max(take,NotTake);
        return dp[curr][prev+1] = ans;
     }
-    int lengthOfLIS(vector<int>& nums) {
+    //Tabulation
+    
+    int solveTab(vector<int>&nums)
+    {
         int n = nums.size();
-       vector<vector<int>>dp(n,vector<int>(n+1,-1));
-        return solve(nums,0,-1,dp);
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        for(int curr=n-1;curr>=0;curr--)
+    {
+        for(int prev = curr-1;prev>=-1;prev--)
+        {
+       int take = 0;
+       if(prev==-1 || nums[curr]>nums[prev])
+       take = 1+dp[curr+1][curr+1];
+       //exclude
+       int NotTake = 0+dp[curr+1][prev+1];
+      dp[curr][prev+1] = max(take,NotTake);
+     
+        }
+    }
+     return dp[0][0];
+    }
+    int lengthOfLIS(vector<int>& nums) {
+       //  int n = nums.size();
+       // vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        // return solve(nums,0,-1,dp);
+        return solveTab(nums);
     }
 };
