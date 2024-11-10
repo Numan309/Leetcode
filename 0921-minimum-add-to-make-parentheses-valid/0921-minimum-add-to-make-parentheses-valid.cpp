@@ -1,18 +1,25 @@
 class Solution {
 public:
     int minAddToMakeValid(string s) {
-        stack<char>st;
-        int cnt = 0;
-        for(int i=0;i<s.size();i++)
-        {
-            if(s[i]=='('){
-                st.push(s[i]);
-            }else if(st.empty()){
-                    cnt++;
-            }else{
-                st.pop();
+        int openCount = 0;  // To track unmatched '('
+        int closeCount = 0; // To track unmatched ')'
+
+        for (char ch : s) {
+            if (ch == '(') {
+                openCount++;
+            } else if (ch == ')') {
+                if (openCount > 0) {
+                    // We can match one open '(' with this close ')'
+                    openCount--;
+                } else {
+                    // No unmatched '(' to match this ')'
+                    closeCount++;
+                }
             }
         }
-        return cnt+st.size();
+
+        // openCount will hold unmatched '('
+        // closeCount will hold unmatched ')'
+        return openCount + closeCount;
     }
 };
