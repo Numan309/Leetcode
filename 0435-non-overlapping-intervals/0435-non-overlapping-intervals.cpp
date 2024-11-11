@@ -4,34 +4,32 @@ public:
     int eraseOverlapIntervals(vector<vector<int>>& intervals) {
         int n = intervals.size();
         sort(intervals.begin(),intervals.end());
-        int cnt = 0;
-        int i=0,j = 1;
+       int cnt = 0;
+        int i = 1;
+        vi L = intervals[0];
         
-        while(j<n)
+        while(i<n)
         {
-            vi curr = intervals[i];
-            vi next = intervals[j];
+            int curr_start = intervals[i][0];
+            int curr_end = intervals[i][1];
             
-            int cs = curr[0];
-            int ce = curr[1];
+            int last_end = L[1];
             
-            int ns = next[0];
-            int ne = next[1];
-            
-            if(ce<=ns) // no overlapping
+            if(curr_start>=last_end)
             {
-                i = j;
-                j++;
-            }else if(ce<=ne)//overlapping
+                L=intervals[i];
+               
+            }else if(curr_end>=last_end)
             {
-                j++;
+             
                 cnt++;
-            }else if(ce>ne) // overlapping
+            }else if(curr_end<last_end)
             {
-                i=j;
-                j++;
+                L = intervals[i];
+              
                 cnt++;
             }
+            i++;
         }
         return cnt;
     }
