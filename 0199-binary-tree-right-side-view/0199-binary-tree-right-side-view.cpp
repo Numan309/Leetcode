@@ -11,29 +11,20 @@
  */
 class Solution {
 public:
-    vector<int> rightSideView(TreeNode* root) {
-        if (root == NULL) return {};
-        vector<int> res;
-        queue<TreeNode*> q;
-        q.push(root);
-        
-        while (!q.empty()) {
-            int n = q.size();
-            TreeNode* temp; // Declare temp here
-            
-            while(n--) {
-                temp = q.front();
-                q.pop();
-                
-                if (temp->left) {
-                    q.push(temp->left);
-                }
-                if (temp->right) {
-                    q.push(temp->right);
-                }
-            }
-            res.push_back(temp->val); // Now temp is the rightmost node
+    void preOrder(TreeNode* root,int level,vector<int>&res)
+    {
+        if(root==NULL)
+            return;
+        if(res.size()<level)
+        {
+            res.push_back(root->val);
         }
+        preOrder(root->right,level+1,res);
+        preOrder(root->left,level+1,res);
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int>res;
+        preOrder(root,1,res);
         return res;
     }
 };
