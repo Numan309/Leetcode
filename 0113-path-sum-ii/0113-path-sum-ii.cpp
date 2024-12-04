@@ -12,14 +12,12 @@
 class Solution {
 public:
     vector<vector<int>>v;
-    
     void solve(TreeNode* root,int sum,vector<int>temp,int &targetSum)
     {
         if(root==NULL) return;
-        
         sum+=root->val;
         temp.push_back(root->val);
-        //If leaf node
+        
         if(root->left==NULL && root->right==NULL)
         {
             if(sum==targetSum)
